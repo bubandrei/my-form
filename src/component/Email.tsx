@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Email: React.FunctionComponent = () => {
     const [email, setEmail] = useState<string>('');
-    const [emailError, setError] = useState<string>('ERROR');
+    const [emailError, setError] = useState<string>('');
     const [emailDirty, setEmailDirty] = useState<boolean>(false);
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         switch (event.target.name) {
@@ -10,21 +10,25 @@ const Email: React.FunctionComponent = () => {
                 setEmailDirty(true);
                 break
         }
-        setEmail(event.target.value)
+        setEmail(event.target.value);
+        setError('');
+
+    }
+    const testEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         const re =
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!re.test(String(event.target.value).toLowerCase())){
+        if (!re.test(String(event.target.value).toLowerCase())) {
             setError('BIG ERROR');
-        } else{
+        } else {
             setError('');
         }
     }
-
     return (
         <div>
             <label htmlFor="idEmail">E-mail</label>
             <input
                 value={email}
+                onBlur={testEmail}
                 onChange={changeHandler}
                 name='email'
                 type="text"
