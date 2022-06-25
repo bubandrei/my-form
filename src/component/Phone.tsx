@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 const Phone: React.FunctionComponent = () => {
-    const [phone, setPhone] = useState<number>();
+    const [phone, setPhone] = useState<string>('');
     const [phoneError, setError] = useState<string>('');
     const [phoneDirty, setPhoneDiry] = useState<boolean>(false);
 
-    const changeHandler = (event: any) => {
+    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         switch (event.target.name) {
             case 'phoneNumber':
                 setPhoneDiry(true);
@@ -15,7 +15,7 @@ const Phone: React.FunctionComponent = () => {
         setError('');
 
     }
-    const testPhone = (event: any) => {
+    const testPhone = (event: React.ChangeEvent<HTMLInputElement>) => {
         const re = /^((\+7|7|8)+([0-9]){10})$/
         if (!re.test(String(event.target.value).toLowerCase())) {
             setError('BIG ERROR');
