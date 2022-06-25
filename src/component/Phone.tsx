@@ -1,9 +1,9 @@
 import React from "react";
 
-const Phone = () => {
+const Phone: React.FunctionComponent = () => {
     return (
         <div>
-            <div> <label htmlFor="idPhone">Phone</label></div>
+            <label htmlFor="idPhone">Phone</label>
             <input type="text" name="" id="idPhone" />
         </div>
 

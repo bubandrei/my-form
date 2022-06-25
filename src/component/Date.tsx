@@ -1,9 +1,9 @@
 import React from "react";
 
-const Date = () => {
+const Date: React.FunctionComponent = () => {
     return (
         <div>
-            <label htmlFor="">date</label>
+            <label htmlFor="">Date</label>
             <input type="date" name="" id="" />
         </div>
 

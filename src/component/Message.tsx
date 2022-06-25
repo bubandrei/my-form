@@ -1,6 +1,6 @@
 import React from "react";
 
-const Message = () => {
+const Message: React.FunctionComponent = () => {
     return (
         <div>
             <textarea name="" id="" cols={30} rows={10}></textarea>

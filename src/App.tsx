@@ -4,8 +4,9 @@ import Message from "./component/Message";
 import Name from "./component/Name";
 import Phone from "./component/Phone";
 import Submit from "./component/Submit";
+import Date from "./component/Date";
 
-const App = () => {
+const App: React.FunctionComponent = () => {
   return (
     <form>
       <Name></Name>
