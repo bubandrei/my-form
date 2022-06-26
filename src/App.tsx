@@ -76,6 +76,7 @@ const App: React.FunctionComponent = () => {
     }
     return await response.json();
   }
+
   const sendForm = async (url: RequestInfo | URL, form: any) => {
     const response = await fetch(url, {
       method: 'POST',
@@ -89,16 +90,19 @@ const App: React.FunctionComponent = () => {
   const handleHandler = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     const fullForm = JSON.stringify(form);
-    sendForm('https://jsonplaceholder.typicode.com/posts', fullForm)
-      .then(() => {
-        setForm(initForm);
-      })
-      .then(() => {
-        getForm('https://jsonplaceholder.typicode.com/posts');
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (form.userName && form.email && form.phone && form.date && form.text) {
+      sendForm('https://jsonplaceholder.typicode.com/posts', fullForm)
+        .then(() => {
+          getForm('https://jsonplaceholder.typicode.com/posts');
+        })
+        .then(() => {
+          setForm(initForm);
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+
   }
   const newDate = (e: any) => {
     setCheckFlag({ ...checkFlag, date: true });
