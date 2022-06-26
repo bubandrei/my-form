@@ -1,9 +1,10 @@
 import React from "react";
 
-const Btn: React.FunctionComponent = () => {
+const Btn: React.FunctionComponent = (props) => {
+    // console.log(apply)
     return (
         <div>
-           <input type="submit" value="Apply"/>
+           <button type="submit" value="Apply">Apply</button>
         </div>
 
     )
