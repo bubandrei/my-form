@@ -14,7 +14,7 @@ const Email: React.FunctionComponent = () => {
         setError('');
 
     }
-    const testEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checkEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         const re =
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (!re.test(String(event.target.value).toLowerCase())) {
@@ -28,7 +28,7 @@ const Email: React.FunctionComponent = () => {
             <label htmlFor="idEmail">E-mail</label>
             <input
                 value={email}
-                onBlur={testEmail}
+                onBlur={checkEmail}
                 onChange={changeHandler}
                 name='email'
                 type="text"
