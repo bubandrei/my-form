@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { format } from "node:path/win32";
 import React, { useState } from "react";
 import { flushSync } from "react-dom";
 import { validateLocaleAndSetLanguage } from "typescript";
@@ -67,11 +68,37 @@ const App: React.FunctionComponent = () => {
         break
     }
   }
+  const getForm = async (url: RequestInfo | URL) => {
+    const response = await fetch(url);
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${url}, status ${response}`);
+    }
+    return await response.json();
+  }
+  const sendForm = async (url: RequestInfo | URL, form: any) => {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: form
+    });
+    if (!response.ok) {
+      throw new Error(`Error ${url}, status ${response}`);
+    }
+    return await response.json();
+  }
   const handleHandler = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    // console.log(e);
-    console.log(checkFlag)
-    // validate(form);
+    const fullForm = JSON.stringify(form);
+    sendForm('https://jsonplaceholder.typicode.com/posts', fullForm)
+      .then(() => {
+        setForm(initForm);
+      })
+      .then(() => {
+        getForm('https://jsonplaceholder.typicode.com/posts');
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   const newDate = (e: any) => {
     setCheckFlag({ ...checkFlag, date: true });
