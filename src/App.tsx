@@ -19,7 +19,6 @@ const App: React.FunctionComponent = () => {
   const changeHandler = (event: any) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value })
-
     switch (event.target.name) {
       case 'userName':
         setNameDirty(true);
@@ -65,6 +64,10 @@ const App: React.FunctionComponent = () => {
           setText('invalid number of characters');
           setCheckFlag({ ...checkFlag, text: false });
         }
+        break
+      case 'date':
+        setNameDirty(true);
+        setCheckFlag({ ...checkFlag, date: true });
         break
     }
   }
@@ -146,7 +149,7 @@ const App: React.FunctionComponent = () => {
         </div>
         <div>
           <label htmlFor="">Date</label>
-          <input type="date" onSelect={newDate} />
+          <input type="date" name="date" onSelect={changeHandler} />
         </div>
         <div>
           <textarea value={form.text} name="text" onChange={changeHandler} minLength={10} maxLength={300} cols={30} rows={10}></textarea>
@@ -160,3 +163,7 @@ const App: React.FunctionComponent = () => {
   )
 }
 export default App;
+
+function setDate() {
+  throw new Error("Function not implemented.");
+}
