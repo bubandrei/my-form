@@ -1,16 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
+import { flushSync } from "react-dom";
+import { validateLocaleAndSetLanguage } from "typescript";
 
 
 const App: React.FunctionComponent = () => {
   const initForm = { userName: '', email: '', phone: '', date: '', text: '' };
+  const check = { userName: false, email: false, phone: false, date: false, text: false };
   const [form, setForm] = useState(initForm);
-  const [error, setError] = useState<string>('')
-  const [errorPhone, setErrorPhone] = useState<string>('')
-  const [errorEmail, setErrorEmail] = useState<string>('')
+  const [error, setError] = useState<string>('');
+  const [errorPhone, setErrorPhone] = useState<string>('');
+  const [errorEmail, setErrorEmail] = useState<string>('');
+  const [errorText, setText] = useState<string>('');
   const [nameDirty, setNameDirty] = useState<boolean>(false);
+  const [checkFlag, setCheckFlag] = useState(check);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = (event: any) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value })
 
@@ -20,36 +25,56 @@ const App: React.FunctionComponent = () => {
         const checkName = /^[A-Z][a-z]{2,29}\040[A-Z][a-z]{2,29}$/i;
         if (!checkName.test(String(event.target.value).toLowerCase()) && event.target.value.length !== 0) {
           setError('enter first and last name');
+          setCheckFlag({ ...checkFlag, userName: false });
         } else {
           setError('');
+          setCheckFlag({ ...checkFlag, userName: true });
         }
         break
       case 'email':
         setNameDirty(true);
         const checkEmail =
-            /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (!checkEmail.test(String(event.target.value).toLowerCase()) && event.target.value.length !== 0) {
           setErrorEmail('enter a valid email');
+          setCheckFlag({ ...checkFlag, email: false });
         } else {
           setErrorEmail('');
+          setCheckFlag({ ...checkFlag, email: true });
         }
         break
       case 'phone':
         setNameDirty(true);
         const checkPhone = /^((\+7|7|8)+([0-9]){10})$/
         if (!checkPhone.test(String(event.target.value).toLowerCase()) && event.target.value.length !== 0) {
-           setErrorPhone('enter a valid phone number');
+          setErrorPhone('enter a valid phone number');
+          setCheckFlag({ ...checkFlag, phone: false });
         } else {
           setErrorPhone('');
+          setCheckFlag({ ...checkFlag, phone: true });
+        }
+        break
+      case 'text':
+        setNameDirty(true);
+        let message = event.target.value;
+        if (message.length > 10 && message.length < 300) {
+          setText('');
+          setCheckFlag({ ...checkFlag, text: true });
+        } else {
+          setText('invalid number of characters');
+          setCheckFlag({ ...checkFlag, text: false });
         }
         break
     }
-
-
   }
   const handleHandler = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    console.log(e)
+    // console.log(e);
+    console.log(checkFlag)
+    // validate(form);
+  }
+  const newDate = (e: any) => {
+    setCheckFlag({ ...checkFlag, date: true });
   }
   return (
     <>
@@ -90,10 +115,11 @@ const App: React.FunctionComponent = () => {
         </div>
         <div>
           <label htmlFor="">Date</label>
-          <input type="date" name="" id="" />
+          <input type="date" onSelect={newDate} />
         </div>
         <div>
-          <textarea minLength={10} maxLength={300} cols={30} rows={10}></textarea>
+          <textarea value={form.text} name="text" onChange={changeHandler} minLength={10} maxLength={300} cols={30} rows={10}></textarea>
+          {(nameDirty && errorText) && <div style={{ color: 'red' }}>{errorText}</div>}
         </div >
         <div>
           <button type="submit" value="Apply">Apply</button>
