@@ -5,7 +5,7 @@ const Name: React.FunctionComponent = () => {
     const [nameError, setError] = useState<string>('');
     const [nameDirty, setNameDirty] = useState<boolean>(false);
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        switch (event.target.name) {
+        switch (event.target.name.toUpperCase()) {
             case 'inputName':
                 setNameDirty(true);
                 break
