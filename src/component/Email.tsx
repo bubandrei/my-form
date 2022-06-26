@@ -15,9 +15,10 @@ const Email: React.FunctionComponent = () => {
 
     }
     const checkEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let text = event.target.value
         const re =
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!re.test(String(event.target.value).toLowerCase())) {
+        if (!re.test(String(text).toLowerCase()) && text.length !== 0) {
             setError('BIG ERROR');
         } else {
             setError('');

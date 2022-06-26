@@ -16,8 +16,9 @@ const Phone: React.FunctionComponent = () => {
 
     }
     const testPhone = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let inputPhone = event.target.value;
         const re = /^((\+7|7|8)+([0-9]){10})$/
-        if (!re.test(String(event.target.value).toLowerCase())) {
+        if (!re.test(String(inputPhone).toLowerCase()) && inputPhone.length !== 0) {
             setError('BIG ERROR');
         } else {
             setError('');
@@ -34,7 +35,7 @@ const Phone: React.FunctionComponent = () => {
                 name="phoneNumber"
                 id="idPhone"
                 placeholder="+7" />
-                 {(phoneDirty && phoneError) && <div style={{ color: 'red' }}>{phoneError}</div>}
+            {(phoneDirty && phoneError) && <div style={{ color: 'red' }}>{phoneError}</div>}
         </div>
 
     )

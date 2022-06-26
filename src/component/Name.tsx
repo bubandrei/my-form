@@ -5,17 +5,18 @@ const Name: React.FunctionComponent = () => {
     const [nameError, setError] = useState<string>('');
     const [nameDirty, setNameDirty] = useState<boolean>(false);
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        switch (event.target.name.toUpperCase()) {
+        switch (event.target.name) {
             case 'inputName':
                 setNameDirty(true);
                 break
         }
-        setName(event.target.value);
-        console.log(event);
+        setName(event.target.value.toUpperCase());
+        setError('')
     }
     const checkName = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let text = event.target.value;
         const re = /^[A-Z][a-z]{2,29}\040[A-Z][a-z]{2,29}$/i;
-        if (!re.test(String(event.target.value).toLowerCase())) {
+        if (!re.test(String(text).toLowerCase()) && text.length !== 0) {
             setError('BIG ERROR');
         } else {
             setError('');
@@ -33,7 +34,7 @@ const Name: React.FunctionComponent = () => {
                 type="text"
                 id="idName"
                 placeholder="Ivan Ivanov" />
-                {(nameDirty && nameError) && <div style={{ color: 'red' }}>{nameError}</div>}
+            {(nameDirty && nameError) && <div style={{ color: 'red' }}>{nameError}</div>}
         </div>
 
     )
