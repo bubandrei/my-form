@@ -75,7 +75,7 @@ const App: React.FunctionComponent = () => {
       setCheckResponse("");
     }, 3000);
   };
-  const getForm = async (url: RequestInfo) => {
+  const getForm = async (url: RequestInfo):Promise<any> => {
     const response = await fetch(url);
     console.log(response);
     if (!response.ok) {
@@ -87,7 +87,7 @@ const App: React.FunctionComponent = () => {
     return data;
   };
 
-  const sendForm = async (url: RequestInfo, form: any) => {
+  const sendForm = async (url: RequestInfo, form: any):Promise<any> => {
     const response = await fetch(url, {
       method: "POST",
       body: form
