@@ -20,6 +20,7 @@ const App: React.FunctionComponent = () => {
   const [errorText, setText] = useState<string>("");
   const [nameDirty, setNameDirty] = useState<boolean>(false);
   const [checkFlag, setCheckFlag] = useState(check);
+  const [checkResponse, setCheckResponse] = useState<string>("");
 
   const changeHandler = (event: any) => {
     const { name, value } = event.target;
@@ -84,18 +85,29 @@ const App: React.FunctionComponent = () => {
         break;
     }
   };
+  const answer = (response: any) => {
+    if (response.status === 200) {
+      setCheckResponse("Success");
+    } else {
+      setCheckResponse("Error");
+    }
+    setTimeout(() => {
+      setCheckResponse("");
+    }, 5000);
+  };
   const getForm = async (url: RequestInfo) => {
-    console.log(url);
     const response = await fetch(url);
     console.log(response);
     if (!response.ok) {
       throw new Error(`Error ${url}, status ${response}`);
     }
-    return await response.json();
+    let data = await response.json();
+    answer(response);
+    console.log(data);
+    return data;
   };
 
   const sendForm = async (url: RequestInfo, form: any) => {
-    console.log(url);
     const response = await fetch(url, {
       method: "POST",
       body: form
@@ -126,7 +138,6 @@ const App: React.FunctionComponent = () => {
   };
   return (
     <>
-      <pre>{JSON.stringify(form, undefined, 2)}</pre>
       <form onSubmit={handleHandler} className="wrap">
         <div className="inputArea">
           <div className="row">
@@ -210,6 +221,7 @@ const App: React.FunctionComponent = () => {
             </button>
           </div>
         </div>
+        <div className="modal">{checkResponse}</div>
       </form>
     </>
   );

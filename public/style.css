@@ -11,6 +11,7 @@ label {
 body {
 }
 .wrap {
+  position: relative;
   padding: 10px;
   background-color: seashell;
   width: 300px;
@@ -27,4 +28,11 @@ body {
 .inputArea {
   margin: auto;
   text-align: center;
+}
+.modal {
+  color: green;
+  height: 20px;
+  /* padding-top: 20px; */
+  font-size: x-large;
+  margin: 10px;
 }
