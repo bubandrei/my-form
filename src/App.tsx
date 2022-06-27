@@ -94,8 +94,7 @@ const App: React.FunctionComponent = () => {
     }
     setTimeout(() => {
       setCheckResponse("");
-      setDisable(false);
-    }, 5000);
+    }, 3000);
   };
   const getForm = async (url: RequestInfo) => {
     const response = await fetch(url);
@@ -105,7 +104,7 @@ const App: React.FunctionComponent = () => {
     }
     let data = await response.json();
     answer(response);
-    console.log(data);
+    setDisable(false);
     return data;
   };
 
@@ -136,9 +135,9 @@ const App: React.FunctionComponent = () => {
         });
     }
   };
-  const newDate = (e: any) => {
-    setCheckFlag({ ...checkFlag, date: true });
-  };
+  // const newDate = (e: any) => {
+  //   setCheckFlag({ ...checkFlag, date: true });
+  // };
   return (
     <>
       <form onSubmit={handleHandler} className="wrap">
