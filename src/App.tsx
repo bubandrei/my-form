@@ -21,6 +21,7 @@ const App: React.FunctionComponent = () => {
   const [nameDirty, setNameDirty] = useState<boolean>(false);
   const [checkFlag, setCheckFlag] = useState(check);
   const [checkResponse, setCheckResponse] = useState<string>("");
+  const [disable, setDisable] = useState<boolean>(false);
 
   const changeHandler = (event: any) => {
     const { name, value } = event.target;
@@ -93,6 +94,7 @@ const App: React.FunctionComponent = () => {
     }
     setTimeout(() => {
       setCheckResponse("");
+      setDisable(false);
     }, 5000);
   };
   const getForm = async (url: RequestInfo) => {
@@ -124,6 +126,7 @@ const App: React.FunctionComponent = () => {
       sendForm("https://jsonplaceholder.typicode.com/posts", fullForm)
         .then(() => {
           getForm("https://jsonplaceholder.typicode.com/posts");
+          setDisable(true);
         })
         .then(() => {
           setForm(initForm);
@@ -216,7 +219,7 @@ const App: React.FunctionComponent = () => {
             ></textarea>
           </div>
           <div>
-            <button type="submit" value="Apply">
+            <button type="submit" disabled={disable}>
               Apply
             </button>
           </div>
