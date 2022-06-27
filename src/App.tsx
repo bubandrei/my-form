@@ -1,25 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { format } from "node:path/win32";
 import React, { useState } from "react";
-import { flushSync } from "react-dom";
-import { validateLocaleAndSetLanguage } from "typescript";
+
+export interface IForm {
+  userName: string;
+  email: string;
+  phone: string;
+  date: string;
+  text: string;
+}
 
 const App: React.FunctionComponent = () => {
-  const initForm = { userName: "", email: "", phone: "", date: "", text: "" };
-  const check = {
-    userName: false,
-    email: false,
-    phone: false,
-    date: false,
-    text: false
-  };
+  const initForm: IForm = { userName: "", email: "", phone: "", date: "", text: "" };
+
   const [form, setForm] = useState(initForm);
   const [error, setError] = useState<string>("");
   const [errorPhone, setErrorPhone] = useState<string>("");
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorText, setText] = useState<string>("");
-  const [nameDirty, setNameDirty] = useState<boolean>(false);
-  const [checkFlag, setCheckFlag] = useState(check);
   const [checkResponse, setCheckResponse] = useState<string>("");
   const [disable, setDisable] = useState<boolean>(false);
 
@@ -28,61 +24,44 @@ const App: React.FunctionComponent = () => {
     setForm({ ...form, [name]: value });
     switch (event.target.name) {
       case "userName":
-        setNameDirty(true);
         const checkName = /^[A-Z][a-z]{2,29}\040[A-Z][a-z]{2,29}$/i;
         if (
           !checkName.test(String(event.target.value).toLowerCase()) &&
           event.target.value.length !== 0
         ) {
           setError("enter first and last name");
-          setCheckFlag({ ...checkFlag, userName: false });
         } else {
           setError("");
-          setCheckFlag({ ...checkFlag, userName: true });
         }
         break;
       case "email":
-        setNameDirty(true);
         const checkEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (
           !checkEmail.test(String(event.target.value).toLowerCase()) &&
           event.target.value.length !== 0
         ) {
           setErrorEmail("enter a valid email");
-          setCheckFlag({ ...checkFlag, email: false });
         } else {
           setErrorEmail("");
-          setCheckFlag({ ...checkFlag, email: true });
         }
         break;
       case "phone":
-        setNameDirty(true);
         const checkPhone = /^((\+7|7|8)+([0-9]){10})$/;
         if (
-          !checkPhone.test(String(event.target.value).toLowerCase()) &&
+          !checkPhone.test(event.target.value) &&
           event.target.value.length !== 0
         ) {
           setErrorPhone("enter a valid phone number");
-          setCheckFlag({ ...checkFlag, phone: false });
         } else {
           setErrorPhone("");
-          setCheckFlag({ ...checkFlag, phone: true });
         }
         break;
       case "text":
-        setNameDirty(true);
-        let message = event.target.value;
-        if (message.length > 10 && message.length < 300) {
+        if (event.target.value.length > 10 && event.target.value.length < 300) {
           setText("");
-          setCheckFlag({ ...checkFlag, text: true });
         } else {
           setText("invalid number of characters");
-          setCheckFlag({ ...checkFlag, text: false });
         }
-        break;
-      case "date":
-        setNameDirty(true);
-        setCheckFlag({ ...checkFlag, date: true });
         break;
     }
   };
@@ -135,19 +114,14 @@ const App: React.FunctionComponent = () => {
         });
     }
   };
-  // const newDate = (e: any) => {
-  //   setCheckFlag({ ...checkFlag, date: true });
-  // };
   return (
     <>
       <form onSubmit={handleHandler} className="wrap">
         <div className="inputArea">
-          <div className="row">
+          <div>
             <label htmlFor="idName">
               Name
-              {nameDirty && error && (
-                <span style={{ color: "red" }}> ({error})</span>
-              )}
+              {error && (<span style={{ color: "red" }}> ({error})</span>)}
             </label>
             <input
               value={form.userName.toUpperCase()}
@@ -161,9 +135,7 @@ const App: React.FunctionComponent = () => {
           <div>
             <label htmlFor="idEmail">
               E-mail
-              {nameDirty && errorEmail && (
-                <span style={{ color: "red" }}> ({errorEmail})</span>
-              )}
+              {errorEmail && (<span style={{ color: "red" }}> ({errorEmail})</span>)}
             </label>
             <input
               value={form.email}
@@ -177,17 +149,15 @@ const App: React.FunctionComponent = () => {
           <div>
             <label htmlFor="idPhone">
               Phone
-              {nameDirty && errorPhone && (
-                <span style={{ color: "red" }}> ({errorPhone})</span>
-              )}
+              {errorPhone && (<span style={{ color: "red" }}> ({errorPhone})</span>)}
             </label>
             <input
               value={form.phone}
               onChange={changeHandler}
-              type="text"
+              type="number"
               name="phone"
               id="idPhone"
-              placeholder="+7"
+              placeholder="+7 123 4456 789"
             />
           </div>
           <div>
@@ -202,9 +172,7 @@ const App: React.FunctionComponent = () => {
           <div>
             <label htmlFor="idTextarea">
               Text
-              {nameDirty && errorText && (
-                <span style={{ color: "red" }}> ({errorText})</span>
-              )}
+              {errorText && (<span style={{ color: "red" }}> ({errorText})</span>)}
             </label>
             <textarea
               value={form.text}
@@ -230,6 +198,3 @@ const App: React.FunctionComponent = () => {
 };
 export default App;
 
-// function setDate() {
-//   throw new Error("Function not implemented.");
-// }

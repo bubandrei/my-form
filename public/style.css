@@ -8,8 +8,6 @@ label {
   display: block;
   text-align: initial;
 }
-body {
-}
 .wrap {
   position: relative;
   padding: 10px;
@@ -23,8 +21,6 @@ body {
   -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
-.row {
-}
 .inputArea {
   margin: auto;
   text-align: center;
@@ -32,7 +28,6 @@ body {
 .modal {
   color: green;
   height: 20px;
-  /* padding-top: 20px; */
   font-size: x-large;
   margin: 10px;
 }
