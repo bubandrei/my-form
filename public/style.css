@@ -1,3 +1,30 @@
-input, label{
-    display: block;
+input {
+  display: block;
+  width: 95%;
+  padding: 5px;
+}
+label {
+  padding: 5px;
+  display: block;
+  text-align: initial;
+}
+body {
+}
+.wrap {
+  padding: 10px;
+  background-color: seashell;
+  width: 300px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+.row {
+}
+.inputArea {
+  margin: auto;
+  text-align: center;
 }

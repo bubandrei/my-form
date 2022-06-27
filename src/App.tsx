@@ -4,166 +4,218 @@ import React, { useState } from "react";
 import { flushSync } from "react-dom";
 import { validateLocaleAndSetLanguage } from "typescript";
 
-
 const App: React.FunctionComponent = () => {
-  const initForm = { userName: '', email: '', phone: '', date: '', text: '' };
-  const check = { userName: false, email: false, phone: false, date: false, text: false };
+  const initForm = { userName: "", email: "", phone: "", date: "", text: "" };
+  const check = {
+    userName: false,
+    email: false,
+    phone: false,
+    date: false,
+    text: false
+  };
   const [form, setForm] = useState(initForm);
-  const [error, setError] = useState<string>('');
-  const [errorPhone, setErrorPhone] = useState<string>('');
-  const [errorEmail, setErrorEmail] = useState<string>('');
-  const [errorText, setText] = useState<string>('');
+  const [error, setError] = useState<string>("");
+  const [errorPhone, setErrorPhone] = useState<string>("");
+  const [errorEmail, setErrorEmail] = useState<string>("");
+  const [errorText, setText] = useState<string>("");
   const [nameDirty, setNameDirty] = useState<boolean>(false);
   const [checkFlag, setCheckFlag] = useState(check);
 
   const changeHandler = (event: any) => {
     const { name, value } = event.target;
-    setForm({ ...form, [name]: value })
+    setForm({ ...form, [name]: value });
     switch (event.target.name) {
-      case 'userName':
+      case "userName":
         setNameDirty(true);
         const checkName = /^[A-Z][a-z]{2,29}\040[A-Z][a-z]{2,29}$/i;
-        if (!checkName.test(String(event.target.value).toLowerCase()) && event.target.value.length !== 0) {
-          setError('enter first and last name');
+        if (
+          !checkName.test(String(event.target.value).toLowerCase()) &&
+          event.target.value.length !== 0
+        ) {
+          setError("enter first and last name");
           setCheckFlag({ ...checkFlag, userName: false });
         } else {
-          setError('');
+          setError("");
           setCheckFlag({ ...checkFlag, userName: true });
         }
-        break
-      case 'email':
+        break;
+      case "email":
         setNameDirty(true);
-        const checkEmail =
-          /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!checkEmail.test(String(event.target.value).toLowerCase()) && event.target.value.length !== 0) {
-          setErrorEmail('enter a valid email');
+        const checkEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (
+          !checkEmail.test(String(event.target.value).toLowerCase()) &&
+          event.target.value.length !== 0
+        ) {
+          setErrorEmail("enter a valid email");
           setCheckFlag({ ...checkFlag, email: false });
         } else {
-          setErrorEmail('');
+          setErrorEmail("");
           setCheckFlag({ ...checkFlag, email: true });
         }
-        break
-      case 'phone':
+        break;
+      case "phone":
         setNameDirty(true);
-        const checkPhone = /^((\+7|7|8)+([0-9]){10})$/
-        if (!checkPhone.test(String(event.target.value).toLowerCase()) && event.target.value.length !== 0) {
-          setErrorPhone('enter a valid phone number');
+        const checkPhone = /^((\+7|7|8)+([0-9]){10})$/;
+        if (
+          !checkPhone.test(String(event.target.value).toLowerCase()) &&
+          event.target.value.length !== 0
+        ) {
+          setErrorPhone("enter a valid phone number");
           setCheckFlag({ ...checkFlag, phone: false });
         } else {
-          setErrorPhone('');
+          setErrorPhone("");
           setCheckFlag({ ...checkFlag, phone: true });
         }
-        break
-      case 'text':
+        break;
+      case "text":
         setNameDirty(true);
         let message = event.target.value;
         if (message.length > 10 && message.length < 300) {
-          setText('');
+          setText("");
           setCheckFlag({ ...checkFlag, text: true });
         } else {
-          setText('invalid number of characters');
+          setText("invalid number of characters");
           setCheckFlag({ ...checkFlag, text: false });
         }
-        break
-      case 'date':
+        break;
+      case "date":
         setNameDirty(true);
         setCheckFlag({ ...checkFlag, date: true });
-        break
+        break;
     }
-  }
-  const getForm = async (url: RequestInfo | URL) => {
+  };
+  const getForm = async (url: RequestInfo) => {
+    console.log(url);
     const response = await fetch(url);
-    console.log(response)
+    console.log(response);
     if (!response.ok) {
       throw new Error(`Error ${url}, status ${response}`);
     }
     return await response.json();
-  }
+  };
 
-  const sendForm = async (url: RequestInfo | URL, form: any) => {
+  const sendForm = async (url: RequestInfo, form: any) => {
+    console.log(url);
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       body: form
     });
     if (!response.ok) {
       throw new Error(`Error ${url}, status ${response}`);
     }
     return await response.json();
-  }
-  const handleHandler = (e: { preventDefault: () => void; }) => {
+  };
+  const handleHandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const fullForm = JSON.stringify(form);
     if (form.userName && form.email && form.phone && form.date && form.text) {
-      sendForm('https://jsonplaceholder.typicode.com/posts', fullForm)
+      sendForm("https://jsonplaceholder.typicode.com/posts", fullForm)
         .then(() => {
-          getForm('https://jsonplaceholder.typicode.com/posts');
+          getForm("https://jsonplaceholder.typicode.com/posts");
         })
         .then(() => {
           setForm(initForm);
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     }
-
-  }
+  };
   const newDate = (e: any) => {
     setCheckFlag({ ...checkFlag, date: true });
-  }
+  };
   return (
     <>
       <pre>{JSON.stringify(form, undefined, 2)}</pre>
-      <form onSubmit={handleHandler}>
-        <div>
-          <label htmlFor="idName">Name</label>
-          <input
-            value={form.userName.toUpperCase()}
-            onChange={changeHandler}
-            name='userName'
-            type="text"
-            id="idName"
-            placeholder="Ivan Ivanov" />
-          {(nameDirty && error) && <div style={{ color: 'red' }}>{error}</div>}
-        </div>
-        <div>
-          <label htmlFor="idEmail">E-mail</label>
-          <input
-            value={form.email}
-            onChange={changeHandler}
-            name='email'
-            type="text"
-            id="idEmail"
-            placeholder="email@gmail.com" />
-          {(nameDirty && errorEmail) && <div style={{ color: 'red' }}>{errorEmail}</div>}
-        </div>
-        <div>
-          <label htmlFor="idPhone">Phone</label>
-          <input
-            value={form.phone}
-            onChange={changeHandler}
-            type="text"
-            name="phone"
-            id="idPhone"
-            placeholder="+7" />
-          {(nameDirty && errorPhone) && <div style={{ color: 'red' }}>{errorPhone}</div>}
-        </div>
-        <div>
-          <label htmlFor="">Date</label>
-          <input type="date" name="date" onSelect={changeHandler} />
-        </div>
-        <div>
-          <textarea value={form.text} name="text" onChange={changeHandler} minLength={10} maxLength={300} cols={30} rows={10}></textarea>
-          {(nameDirty && errorText) && <div style={{ color: 'red' }}>{errorText}</div>}
-        </div >
-        <div>
-          <button type="submit" value="Apply">Apply</button>
+      <form onSubmit={handleHandler} className="wrap">
+        <div className="inputArea">
+          <div className="row">
+            <label htmlFor="idName">
+              Name
+              {nameDirty && error && (
+                <span style={{ color: "red" }}> ({error})</span>
+              )}
+            </label>
+            <input
+              value={form.userName.toUpperCase()}
+              onChange={changeHandler}
+              name="userName"
+              type="text"
+              id="idName"
+              placeholder="Ivan Ivanov"
+            />
+          </div>
+          <div>
+            <label htmlFor="idEmail">
+              E-mail
+              {nameDirty && errorEmail && (
+                <span style={{ color: "red" }}> ({errorEmail})</span>
+              )}
+            </label>
+            <input
+              value={form.email}
+              onChange={changeHandler}
+              name="email"
+              type="text"
+              id="idEmail"
+              placeholder="email@gmail.com"
+            />
+          </div>
+          <div>
+            <label htmlFor="idPhone">
+              Phone
+              {nameDirty && errorPhone && (
+                <span style={{ color: "red" }}> ({errorPhone})</span>
+              )}
+            </label>
+            <input
+              value={form.phone}
+              onChange={changeHandler}
+              type="text"
+              name="phone"
+              id="idPhone"
+              placeholder="+7"
+            />
+          </div>
+          <div>
+            <label htmlFor="idDate">Date</label>
+            <input
+              type="date"
+              name="date"
+              id="idDate"
+              onSelect={changeHandler}
+            />
+          </div>
+          <div>
+            <label htmlFor="idTextarea">
+              Text
+              {nameDirty && errorText && (
+                <span style={{ color: "red" }}> ({errorText})</span>
+              )}
+            </label>
+            <textarea
+              value={form.text}
+              name="text"
+              onChange={changeHandler}
+              id="idTextarea"
+              minLength={10}
+              maxLength={300}
+              cols={30}
+              rows={10}
+            ></textarea>
+          </div>
+          <div>
+            <button type="submit" value="Apply">
+              Apply
+            </button>
+          </div>
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 export default App;
 
-function setDate() {
-  throw new Error("Function not implemented.");
-}
+// function setDate() {
+//   throw new Error("Function not implemented.");
+// }
